@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Function for processing requests
+$listener = function(\App\Request $request, \App\Response $response) {
+    $params = $request->getUri()->getQueryParams();
+    $htmlMessage = '<html><body>' .
+        '<h3>Hi ' . ($params['name'] ?? 'Incognito') . '</h3>' .
+        '</body></html>';
+
+    $response->sendHeaders();
+    $response->getBody()->write($htmlMessage);
+};
+
+$app = new \App\Server($listener);
+$app->run('0.0.0.0', 8080);
+
