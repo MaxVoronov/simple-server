@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exception\InvalidUrlException;
 use Psr\Http\Message\UriInterface;
 
 class Uri implements UriInterface
@@ -235,6 +236,9 @@ class Uri implements UriInterface
     protected function parseUri(string $url): self
     {
         $parsedUrl = parse_url($url);
+        if ($parsedUrl === false) {
+            throw new InvalidUrlException('Can not parse URL');
+        }
 
         $this->scheme = $parsedUrl['scheme'] ?? 'http';
         $this->host = $parsedUrl['host'] ?? '';

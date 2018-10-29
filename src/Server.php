@@ -7,10 +7,9 @@ class Server
     protected $listener;
 
     /**
-     * Server constructor
-     * @param $listener
+     * @param $listener callable
      */
-    public function __construct($listener)
+    public function __construct(callable $listener)
     {
         $this->listener = $listener;
     }
@@ -26,9 +25,9 @@ class Server
         $listeningAddress = sprintf('tcp://%s:%s', $host, $port);
         $socket = stream_socket_server($listeningAddress, $errno, $errstr);
         if (!$socket) {
-            throw new \Exception(sprintf('Error #%s: %s', $errstr, $errno));
+            throw new \Exception(sprintf('Error #%s: %s', $errno, $errstr));
         }
-        echo sprintf('Server ready: %s:%d', $host, $port) . PHP_EOL;
+        printf("Server ready: %s:%d\n", $host, $port);
 
         while ($client = stream_socket_accept($socket, -1)) {
             echo 'Connection accepted from ' . stream_socket_get_name($client, false) . PHP_EOL;

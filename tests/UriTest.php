@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Exception\InvalidUrlException;
 use App\Uri;
 use PHPUnit\Framework\TestCase;
 
@@ -27,5 +28,11 @@ class UriTest extends TestCase
         $uri = new Uri($url);
 
         $this->assertEquals($url, $uri->__toString());
+    }
+
+    public function testParsingIncorrectUri(): void
+    {
+        $this->expectException(InvalidUrlException::class);
+        new Uri('http:///example.com');
     }
 }
